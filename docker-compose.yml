@@ -1,0 +1,68 @@
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DATABASE}
+    ports:
+      - "${POSTGRESQL_PORT:-5433}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRESQL_USERNAME} -d ${POSTGRESQL_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  api:
+    build: .
+    command: celery -A app.core.celery_app.celery_app worker --loglevel=info
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      POSTGRESQL_USERNAME: ${POSTGRESQL_USERNAME}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_SERVER: db
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_DATABASE: ${POSTGRESQL_DATABASE}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - app-network
+
+  smtp:
+    image: mailhog/mailhog:latest
+    container_name: smtp
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - app-network
+
+  
+volumes:
+  db-data:
+
+networks:
+  app-network:
+    driver: bridge

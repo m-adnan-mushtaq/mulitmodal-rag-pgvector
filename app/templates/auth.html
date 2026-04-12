@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    {{ title }}
+  </title>
+  <style>
+    /* Global reset */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f4f6f8;
+      font-family: Arial, sans-serif;
+      color: #333333;
+      line-height: 1.5;
+    }
+
+    table {
+      border-spacing: 0;
+      width: 100%;
+    }
+
+    .wrapper {
+      background: #f4f6f8;
+      padding: 40px 0;
+    }
+
+    .card {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .header {
+      background: #f4f6f8;
+      color: #052f4a;
+      text-align: center;
+      padding: 25px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .body {
+      padding: 30px;
+      font-size: 16px;
+      color: #444444;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: #052f4a;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    .cta-button:hover {
+      opacity: 0.9;
+    }
+
+    .footer {
+      font-size: 13px;
+      color: #777777;
+      text-align: center;
+      padding: 20px;
+      background: #fafafa;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    a {
+      color: #052f4a;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <table class="wrapper" role="presentation">
+    <tr>
+      <td align="center">
+        <table class="card" role="presentation">
+          <!-- Header -->
+          <tr>
+            <td class="header">
+              {{ title }}
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td class="body">
+              <p>
+                {{ message }}
+              </p>
+              <p style="text-align:center;">
+                <a href="{{ cta_link }}" class="cta-button">
+                  {{ cta_title }}</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td class="footer">
+              <p>Email sent on
+                {{ sent_on }}
+              </p>
+              <p>
+                For further queries, contact us at
+                <a href="mailto:{{ support_email }}">
+                  {{ support_email }}</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
